@@ -41,10 +41,12 @@ NTSTATUS NTAPI HookApi(HANDLE FileHandle, HANDLE Event, PIO_APC_ROUTINE ApcRouti
 			offset = info->NextEntryOffset;
 			if (RtlCompareMemory(targetPrefix, &info->FileName, 8) == 8){
 				if (!offset){
-					lastEntry->NextEntryOffset = 0;
+					if (lastEntry)
+						lastEntry->NextEntryOffset = 0;
 				}
 				else {
-					lastEntry->NextEntryOffset += offset;
+					if (lastEntry)
+						lastEntry->NextEntryOffset += offset;
 				}
 			}
 			else {
